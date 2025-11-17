@@ -53,9 +53,9 @@ Thal (1 = normal, 2 = fixed defect, 3 = reversible defect)
 
 Target:
 
-0 → No heart disease
+            0 → No heart disease
 
-1 → Heart disease present
+            1 → Heart disease present
 
 🤖 Machine Learning Models Implemented
 
