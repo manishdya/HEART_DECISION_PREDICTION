@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ML Model Predictor</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="page">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-left">
+        <div class="logo">ML</div>
+        <div>
+          <h1>Heart Decision Prediction <span class="accent"> Model Predictor </span></h1>
+          <p class="lead">Enter 13 numeric features values, choose a model and get fast, reliable predictions.</p>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="server-pill">Server: <strong>local</strong></div>
+      </div>
+    </header>
+
+    <!-- MAIN GRID -->
+    <main class="main">
+      <!-- FORM CARD -->
+      <section class="card card-form">
+        <div class="card-header">
+          <h2>Please Give The Inputs here and get the prediction</h2>
+          <p class="muted">Heart Disease Prediction</p>
+        </div>
+
+        <!-- NOTE: action matches your Flask route -->
+        <form action="/predict" method="post" class="form" autocomplete="off" novalidate>
+          <div class="inputs-grid">
+            <!-- 12 in grid -->
+            <label class="field"><span>Input 1</span><input name="input1" type="number" step="any" placeholder="Enter the age" required></label>
+            <label class="field"><span>Input 2</span><input name="input2" type="number" step="any" placeholder="Enter the gender male=1, female=0" required></label>
+            <label class="field"><span>Input 3</span><input name="input3" type="number" step="any" placeholder="Enter the chest pain type" required></label>
+
+            <label class="field"><span>Input 4</span><input name="input4" type="number" step="any" placeholder="Enter the Bp value" required></label>
+            <label class="field"><span>Input 5</span><input name="input5" type="number" step="any" placeholder="Enter the cholesterol value" required></label>
+            <label class="field"><span>Input 6</span><input name="input6" type="number" step="any" placeholder="Enter the fasting blood sugar" required></label>
+
+            <label class="field"><span>Input 7</span><input name="input7" type="number" step="any" placeholder="Enter the resting electrocardiographic" required></label>
+            <label class="field"><span>Input 8</span><input name="input8" type="number" step="any" placeholder="Enter the maximum heart rate" required></label>
+            <label class="field"><span>Input 9</span><input name="input9" type="number" step="any" placeholder="Enter the exercise induced angina" required></label>
+
+            <label class="field"><span>Input 10</span><input name="input10" type="number" step="any" placeholder="Enter the ST depression induced by exercise relative to rest" required></label>
+            <label class="field"><span>Input 11</span><input name="input11" type="number" step="any" placeholder="Enter the the slope of the peak exercise ST segment" required></label>
+            <label class="field"><span>Input 12</span><input name="input12" type="number" step="any" placeholder="Enter the number of major vessels (0-3) colored by fluoroscopy" required></label>
+          </div>
+
+          <label class="field full"><span>Input 13</span><input name="input13" type="number" step="any" placeholder="Enter 1 = normal; 2 = fixed defect; 3 = reversible defect" required></label>
+
+          <div class="form-bottom">
+            <label class="model-select">
+              <span>Choose model</span>
+              <select name="model" required>
+                <!-- THESE OPTION VALUES MATCH THE STRINGS CHECKED IN app.py -->
+                <option value="KNN">K-Nearest Neighbors (KNN)</option>
+                <option value="SVM">Support Vector Machine (SVM)</option>
+                <option value="ADA_BOOST">AdaBoost</option>
+                <!-- Keep spelled exactly as in your app.py -->
+                <option value="Logistic_Regresssion">Logistic_Regresssion</option>
+                <option value="DECISION_TREE">Decision Tree</option>
+                <option value="RANDOM_FOREST">Random Forest</option>
+                <option value="NAVIE_BAYES">Naive Bayes</option>
+                <option value="GRADIENT_BOOSTING">Gradient Boosting</option>
+                <option value="XG_GRADIENT_BOOSTING">XG Gradient Boosting</option>
+              </select>
+            </label>
+
+            <div class="buttons">
+              <button class="btn primary" type="submit">Predict</button>
+              <button class="btn ghost" type="reset">Reset</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- RESULT CARD -->
+      <aside class="card card-result">
+        <div class="card-header">
+          <h2>Results</h2>
+          <br>
+          <p class="muted">Model output and test metrics</p>
+        </div>
+
+        <div class="result">
+          <div class="result-top">
+            <div>
+              <div class="label">Prediction</div>
+              <br>
+              <!-- Show result or a friendly placeholder -->
+              <div class="prediction">{{ prediction_text if prediction_text else "— No prediction yet —" }}</div>
+            </div>
+            <br>
+            <div class="accuracy">{{ accuracy_text if accuracy_text else "" }}</div>
+          </div>
+
+          <div class="metric">
+            <br>
+            <h3>Confusion Matrix</h3>
+            <div class="metric-body">
+              {% if conf_matrix %}
+                <pre class="mono">{{ conf_matrix }}</pre>
+              {% else %}
+                <div class="muted">Confusion matrix will appear here after prediction.</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="metric">
+            <h3>Classification Report</h3>
+            <div class="metric-body">
+              {% if class_report %}
+                <pre class="mono">{{ class_report }}</pre>
+              {% else %}
+                <div class="muted">Classification report will appear here after prediction.</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="result-actions">
+            <br>
+            <br>
+            <a class="btn ghost" href="/">Home</a>
+            <br>
+            <br>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <div>Made By Manish</div>
+    </footer>
+  </div>
+</body>
+</html>
